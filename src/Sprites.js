@@ -67,10 +67,13 @@ export default class TileMap{
             else if (tile === 3) {
             this.#drawinnerBorder(ctx, column, row, this.tileSize);
        }
+       else if (tile === 5) {
+        this.#drawinnerBorder(ctx, column, row, this.tileSize);
+   }
       }
      }
     }
-
+// make a function?
     #drawWall(ctx, column, row, size) {
         ctx.drawImage(
           this.wall,
