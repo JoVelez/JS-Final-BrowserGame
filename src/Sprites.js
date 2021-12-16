@@ -1,3 +1,5 @@
+import Player from './MainCharacter.js'
+
 //exports to be used elsewhere
 export default class TileMap{
     constructor(tileSize){
@@ -15,6 +17,12 @@ export default class TileMap{
         this.floor = new Image();
         this.floor.src = '../Images/DungeonTile/floortile2.png';
     }
+
+// 0 - coins
+// 1 - wall
+// 2 - plain floors
+// 3 - inner borders
+// 4 - character start
 
     map = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -35,7 +43,7 @@ export default class TileMap{
         [1,1,1,0,3,3,3,3,3,0,3,0,3,3,3,3,3,0,1,1,1],
         [1,1,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,1,1],
         [1,1,0,3,3,3,0,3,0,3,3,3,0,3,0,3,3,3,0,1,1],
-        [1,1,0,0,0,3,0,3,0,0,0,0,0,3,0,0,0,3,0,1,1],
+        [1,1,0,0,0,3,0,3,0,0,4,0,0,3,0,0,0,3,0,1,1],
         [1,1,0,3,0,3,0,3,0,3,3,3,0,3,0,3,0,3,0,1,1],
         [1,1,0,3,0,0,0,3,0,0,3,0,0,3,0,3,0,0,0,1,1],
         [1,1,0,3,3,3,0,3,3,0,3,0,3,3,0,3,3,3,0,1,1],
@@ -102,6 +110,18 @@ export default class TileMap{
           size
         );
       }
+
+      getPlayer(velocity){
+        for (let row = 0; row < this.map.length; row++) {
+            for (let column = 0; column < this.map[row].length; column++){
+              let tile = this.map[row][column];
+              if(tile === 4){
+                this.map[row][column] = 0;
+                return new Player(column * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize, velocity,this);
+            }
+           }
+          }
+         }
 
     setCanvasSize(canvas) {
         canvas.width = this.map[0].length * this.tileSize;
