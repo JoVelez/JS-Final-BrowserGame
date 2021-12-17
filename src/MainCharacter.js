@@ -1,7 +1,7 @@
 import MovingDirection from "./MovementControls.js";
 
 export default class Player {
-constructor(x,y,tileSize,velocity,tileMap){
+constructor( x, y, tileSize, velocity, tileMap ){
     this.x = x;
     this.y = y;
     this.tileSize = tileSize;
@@ -11,15 +11,19 @@ constructor(x,y,tileSize,velocity,tileMap){
     this.currentMovingDirection = null;
     this.requestedMovingDirection = null;
 
+    this.playerAnimationTimerDefault = 10;
+    this.playerAnimationTimer = null;
+
     document.addEventListener("keydown", this.#keydown);
 
-    this.#loadPlayer();
+    this.#loadPlayerImage();
 }
 
 draw(ctx){
     this.#move();
+    this.#animate();
     ctx.drawImage(
-        this.PlayerWalk[this.playerWalkIndex],
+        this.playerWalk[this.playerImageIndex],
         this.x,
         this.y,
         this.tileSize,
@@ -27,7 +31,7 @@ draw(ctx){
         );
 }
 // make this a gif, theres way too much here
-    #loadPlayer(){
+    #loadPlayerImage(){
         const playerWalk1 = new Image();
         playerWalk1.src = "../Images/Player/walk1.png"
 
@@ -40,18 +44,15 @@ draw(ctx){
         const playerWalk4 = new Image();
         playerWalk4.src = "../Images/Player/walk4.png"
 
-        const playerWalk5 = new Image();
-        playerWalk5.src = "../Images/Player/walk1.png"
 
-        this.PlayerWalk = [
+        this.playerWalk = [
             playerWalk1,
             playerWalk2,
             playerWalk3,
             playerWalk4,
-            playerWalk5,
         ];
 
-        this.playerWalkIndex = 0;
+        this.playerImageIndex = 0;
 
  }
 
@@ -91,11 +92,31 @@ draw(ctx){
       if (
         Number.isInteger(this.x / this.tileSize) &&
         Number.isInteger(this.y / this.tileSize)
-      ) 
-      {
+      ) {
+        if (
+          !this.tileMap.didCollideWithEnvironment(
+            this.x,
+            this.y,
+            this.requestedMovingDirection
+          )
+        )
           this.currentMovingDirection = this.requestedMovingDirection;
       }
     }
+
+    if(
+      this.tileMap.didCollideWithEnvironment( 
+        this.x,
+        this.y,
+        this.currentMovingDirection
+        )
+    ) {
+      return;
+    }
+    else if(this.currentMovingDirection != null && this.playerAnimationTimer == null){
+      this.playerAnimationTimer = this.playerAnimationTimerDefault;
+    }
+
         switch (this.currentMovingDirection) {
             case MovingDirection.up:
               this.y -= this.velocity;
@@ -110,5 +131,17 @@ draw(ctx){
               this.x += this.velocity;
               break;
      }
+  }
+  #animate() {
+    if (this.playerAnimationTimer == null) {
+      return;
+    }
+    this.playerAnimationTimer--;
+    if (this.playerAnimationTimer == 0) {
+      this.playerAnimationTimer = this.playernimationTimerDefault;
+      this.playerImageIndex++;
+      if (this.playerImageIndex == this.playerWalk.length)
+        this.playerImageIndex = 0;
+    }
   }
 }

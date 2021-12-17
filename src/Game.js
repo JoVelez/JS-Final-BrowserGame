@@ -1,7 +1,7 @@
 import TileMap from './Sprites.js';
 
-const tileSize = 40;
-const velocity = 1;
+const tileSize = 38;
+const velocity = 2;
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext('2d');
