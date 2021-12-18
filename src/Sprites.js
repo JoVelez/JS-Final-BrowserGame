@@ -221,4 +221,17 @@ export default class TileMap{
     }
     return false;
   }
+
+  eatMeat(x, y) {
+    const row = y / this.tileSize;
+    const column = x / this.tileSize;
+    if (Number.isInteger(row) && Number.isInteger(column)) {
+      const tile = this.map[row][column];
+      if (tile === 6) {
+        this.map[row][column] = 2;
+        return true;
+      }
+    }
+    return false;
+  }
 }

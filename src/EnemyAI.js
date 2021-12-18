@@ -18,14 +18,53 @@ export default class Enemy {
      this.directionTimerDefault = this.#random(1, 3);
      this.directionTimer = this.directionTimerDefault;
 
+     this.meatAboutToExpireTimerDefault = 10;
+     this.meatAboutToExpireTimer = this.meatAboutToExpireTimerDefault;
+
+
  }
-    draw(ctx, pause){ 
+    draw(ctx, pause, player){ 
         if(!pause){
             this.#move();
             this.#changeDirection();
         }
-        ctx.drawImage(this.image, this.x, this.y, this.tileSize, this.tileSize)
+        this.#setImage(ctx,player);
     }
+
+    collideWith(player) {
+      const size = this.tileSize / 2;
+      if (
+        this.x < player.x + size &&
+        this.x + size > player.x &&
+        this.y < player.y + size &&
+        this.y + size > player.y
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    
+    #setImage(ctx, player){
+      if (player.meatActive) {
+        this.#setImageWhenMeatActive(player);
+      } else {
+        this.image = this.slime;
+      }
+      ctx.drawImage(this.image, this.x, this.y, this.tileSize, this.tileSize);
+      };
+
+      #setImageWhenMeatActive(player){
+        this.image = this.purpleslime;
+        if(player.meatAboutToExpire){
+          this.meatAboutToExpireTimer--;
+          if(this.meatAboutToExpireTimer === 0 ) {
+            this.meatAboutToExpireTimer = this.meatAboutToExpireTimerDefault;
+          }
+        }
+
+      }
+
 
     #changeDirection() {
         this.directionTimer--;

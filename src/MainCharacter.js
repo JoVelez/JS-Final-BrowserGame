@@ -15,7 +15,10 @@ constructor( x, y, tileSize, velocity, tileMap ){
     this.playerAnimationTimer = null;
 
   this.coinEffect = new Audio("../GameSound/coin.wav")
+  this.meatEffect = new Audio("../GameSound/powerup.wav")
+  this.slimeEffect = new Audio("../GameSound/slimedefeat.ogg")
 
+  this.timers = [];
     this.madeFirstMove = false;
 
     document.addEventListener("keydown", this.#keydown);
@@ -25,10 +28,14 @@ constructor( x, y, tileSize, velocity, tileMap ){
     this.#loadPlayerImage();
 }
 
-draw(ctx){
+draw(ctx, pause, enemies){
+  if (!pause){
     this.#move();
     this.#animate();
+  }
     this.#grabCoin();
+    this.#eatMeat();
+
     ctx.drawImage(
         this.playerWalk[this.playerImageIndex],
         this.x,
@@ -156,6 +163,29 @@ draw(ctx){
     if (this.tileMap.grabCoin(this.x, this.y) && this.madeFirstMove) {
       this.coinEffect.play();
     }
+  }
 
+  #eatMeat(){
+    if (this.tileMap.eatMeat(this.x, this.y)) {
+      this.meatEffect.play();
+      this.meatActive = true;
+      this.meatAboutToExpire = false;
+      this.timers.forEach((timer) => clearTimeout(timer));
+      this.timers = [];
+
+      let meatTimer = setTimeout(() => {
+        this.meatActive = false;
+        this.meatAboutToExpire = false;
+      }, 1000 * 6);
+
+      this.timers.push(meatTimer);
+
+      let meatAboutToExpireTimer = setTimeout(() => {
+        this.meatAboutToExpire = true;
+      }, 1000 * 3);
+
+      this.timers.push(meatAboutToExpireTimer);
+    }
   }
 }
+
