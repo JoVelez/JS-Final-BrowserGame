@@ -14,6 +14,8 @@ constructor( x, y, tileSize, velocity, tileMap ){
     this.playerAnimationTimerDefault = 10;
     this.playerAnimationTimer = null;
 
+  this.coinEffect = new Audio("../GameSound/coin.wav")
+
     this.madeFirstMove = false;
 
     document.addEventListener("keydown", this.#keydown);
@@ -26,6 +28,7 @@ constructor( x, y, tileSize, velocity, tileMap ){
 draw(ctx){
     this.#move();
     this.#animate();
+    this.#grabCoin();
     ctx.drawImage(
         this.playerWalk[this.playerImageIndex],
         this.x,
@@ -147,5 +150,12 @@ draw(ctx){
       if (this.playerImageIndex == this.playerWalk.length)
         this.playerImageIndex = 0;
     }
+  }
+  
+  #grabCoin() {
+    if (this.tileMap.grabCoin(this.x, this.y) && this.madeFirstMove) {
+      this.coinEffect.play();
+    }
+
   }
 }

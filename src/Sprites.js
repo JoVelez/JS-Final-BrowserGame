@@ -18,6 +18,9 @@ export default class TileMap{
 
         this.floor = new Image();
         this.floor.src = '../Images/DungeonTile/floortile2.png';
+
+        this.meat = new Image();
+        this.meat.src = '../Images/Collect/tilewithmeat.png';
     }
 
 // 0 - coins
@@ -26,11 +29,12 @@ export default class TileMap{
 // 3 - inner borders
 // 4 - character start
 // 5 - slimes
+// 6 - potion
 
     map = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,0,3,3,3,3,3,0,3,3,3,3,3,0,3,3,3,3,3,0,1],
+        [1,6,3,3,3,3,3,0,3,3,3,3,3,0,3,3,3,3,3,6,1],
         [1,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,3,0,0,0,1],
         [1,1,1,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,1,1,1],
         [1,1,1,0,0,0,3,0,3,0,3,0,3,0,3,0,0,0,1,1,1],
@@ -49,7 +53,7 @@ export default class TileMap{
         [1,1,0,0,0,3,0,3,0,0,4,0,0,3,0,0,0,3,0,1,1],
         [1,1,0,3,0,3,0,3,0,3,3,3,0,3,0,3,0,3,0,1,1],
         [1,1,0,3,0,0,0,3,0,0,3,0,0,3,0,3,0,0,0,1,1],
-        [1,1,0,3,3,3,0,3,3,0,3,0,3,3,0,3,3,3,0,1,1],
+        [1,1,6,3,3,3,0,3,3,0,3,0,3,3,0,3,3,3,6,1,1],
         [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         
@@ -70,6 +74,9 @@ export default class TileMap{
             else if (tile === 3) {
             this.#drawinnerBorder(ctx, column, row, this.tileSize);
        }
+       else if (tile === 6) {
+        this.#drawmeat(ctx, column, row, this.tileSize);
+   }
       }
      }
     }
@@ -83,11 +90,6 @@ export default class TileMap{
           size
         );
       }
-
-#drawBlank(ctx,column,row,size){
-  ctx.fillStyle = "black";
-  ctx.fillRect(column * this.tileSize, row * this.tileSize, size, size);
-}
 
       #drawCoin(ctx, column, row, size) {
         ctx.drawImage(
@@ -112,6 +114,16 @@ export default class TileMap{
       #drawfloor(ctx, column, row, size) {
         ctx.drawImage(
           this.floor,
+          column * this.tileSize,
+          row * this.tileSize,
+          size,
+          size
+        );
+      }
+
+      #drawmeat(ctx, column, row, size) {
+        ctx.drawImage(
+          this.meat,
           column * this.tileSize,
           row * this.tileSize,
           size,
@@ -192,6 +204,18 @@ export default class TileMap{
         }
         const tile = this.map[row][column];
       if ((tile === 1 ) || (tile === 3 )) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  grabCoin(x, y) {
+    const row = y / this.tileSize;
+    const column = x / this.tileSize;
+    if (Number.isInteger(row) && Number.isInteger(column)) {
+      if (this.map[row][column] === 0) {
+        this.map[row][column] = 2;
         return true;
       }
     }
