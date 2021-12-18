@@ -1,5 +1,6 @@
 import Player from './MainCharacter.js'
 import MovingDirection from "./MovementControls.js";
+import Enemy from "./EnemyAI.js"
 
 //exports to be used elsewhere
 export default class TileMap{
@@ -24,6 +25,7 @@ export default class TileMap{
 // 2 - plain floors
 // 3 - inner borders
 // 4 - character start
+// 5 - slimes
 
     map = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -35,10 +37,10 @@ export default class TileMap{
         [1,1,1,0,3,3,3,0,3,0,0,0,3,0,3,3,3,0,1,1,1],
         [1,1,1,0,3,3,3,0,3,3,3,3,3,0,3,3,3,0,1,1,1],
         [1,0,0,0,0,0,3,0,0,0,0,0,0,0,3,0,0,0,0,0,1],
-        [1,0,3,3,3,0,3,0,1,1,2,1,1,0,3,0,3,3,3,0,1],
-        [1,0,0,0,3,0,3,0,1,2,2,2,1,0,3,0,3,0,0,0,1],
+        [1,0,3,3,3,0,3,0,1,1,1,1,1,0,3,0,3,3,3,0,1],
+        [1,0,0,0,3,0,3,0,2,5,2,5,2,0,3,0,3,0,0,0,1],
         [1,1,1,0,3,0,0,0,1,2,2,2,1,0,0,0,3,0,1,1,1],
-        [1,1,1,0,3,0,3,0,1,2,2,2,1,0,3,0,3,0,1,1,1],
+        [1,1,1,0,3,0,3,0,2,5,2,5,2,0,3,0,3,0,1,1,1],
         [1,1,1,0,3,0,3,0,1,1,1,1,1,0,3,0,3,0,1,1,1],
         [1,1,1,0,0,0,3,0,0,0,0,0,0,0,3,0,0,0,1,1,1],
         [1,1,1,0,3,3,3,3,3,0,3,0,3,3,3,3,3,0,1,1,1],
@@ -68,9 +70,6 @@ export default class TileMap{
             else if (tile === 3) {
             this.#drawinnerBorder(ctx, column, row, this.tileSize);
        }
-       else if (tile === 5) {
-        this.#drawinnerBorder(ctx, column, row, this.tileSize);
-   }
       }
      }
     }
@@ -84,6 +83,11 @@ export default class TileMap{
           size
         );
       }
+
+#drawBlank(ctx,column,row,size){
+  ctx.fillStyle = "black";
+  ctx.fillRect(column * this.tileSize, row * this.tileSize, size, size);
+}
 
       #drawCoin(ctx, column, row, size) {
         ctx.drawImage(
@@ -132,6 +136,21 @@ export default class TileMap{
            }
           }
          }
+
+         getEnemies(velocity){
+          const enemies = [];
+
+          for (let row = 0; row < this.map.length; row++) {
+            for (let column = 0; column < this.map[row].length; column++) {
+              let tile = this.map[row][column];
+              if (tile === 5) {
+                this.map[row][column] = 2;
+                enemies.push(new Enemy(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this))
+              }
+            }
+          }
+          return enemies;
+       }
 
     setCanvasSize(canvas) {
         canvas.width = this.map[0].length * this.tileSize;
