@@ -16,7 +16,7 @@ constructor( x, y, tileSize, velocity, tileMap ){
 
   this.coinEffect = new Audio("../GameSound/coin.wav")
   this.meatEffect = new Audio("../GameSound/powerup.wav")
-  this.slimeEffect = new Audio("../GameSound/slimedefeat.ogg")
+  this.slimeDeath = new Audio("../GameSound/slimedefeat.ogg")
 
   this.timers = [];
     this.madeFirstMove = false;
@@ -35,6 +35,7 @@ draw(ctx, pause, enemies){
   }
     this.#grabCoin();
     this.#eatMeat();
+    this.#slaySlime(enemies);
 
     ctx.drawImage(
         this.playerWalk[this.playerImageIndex],
@@ -185,6 +186,16 @@ draw(ctx, pause, enemies){
       }, 1000 * 3);
 
       this.timers.push(meatAboutToExpireTimer);
+    }
+  }
+
+  #slaySlime(enemies) {
+    if (this.meatActive) {
+      const collideEnemies = enemies.filter((enemy) => enemy.collideWith(this));
+      collideEnemies.forEach((enemy) => {
+        enemies.splice(enemies.indexOf(enemy), 1);
+        this.slimeDeath.play();
+      });
     }
   }
 }

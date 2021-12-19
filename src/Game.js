@@ -16,7 +16,8 @@ const gameWinSound = new Audio("../GameSound/win.mp3");
 
 function gameLoop(){
 tileMap.draw(ctx);-
-player.draw(ctx, pause());
+drawGameEnd();
+player.draw(ctx, pause(), enemies);
 enemies.forEach(enemy=>enemy.draw(ctx, pause(), player));
 checkGameOver();
 checkGameWin();
@@ -49,7 +50,22 @@ function checkGameWin() {
 function pause() {
     return !player.madeFirstMove || gameOver || gameWin;
   }
+
+  function drawGameEnd() {
+    if (gameOver || gameWin) {
+      let text = " You Win!";
+      if (gameOver) {
+        text = "Game Over!";
+      }
+      ctx.fillStyle = "black";
+      ctx.fillRect(0, canvas.height / 2.3, canvas.width, 80);
   
+      ctx.font = "60px sans-serif"
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.fillText(text, 400, canvas.height / 2);
+    }
+  }
 
 tileMap.setCanvasSize(canvas);
 setInterval(gameLoop, 1000 / 75);
