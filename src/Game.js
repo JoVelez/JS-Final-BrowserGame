@@ -67,12 +67,12 @@ function pause() {
       }
 
       ctx.fillStyle = "black";
-      ctx.fillRect(0, canvas.height / 2.3, canvas.width, 80);
+      ctx.fillRect(0, canvas.height / 2.5, canvas.width, 80);
   
       ctx.font = "60px sans-serif"
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
-      ctx.fillText(text, 400, canvas.height / 2);
+      ctx.fillText(text, 260, canvas.height / 2);
       
     }
   }
