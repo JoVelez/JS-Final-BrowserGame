@@ -132,10 +132,10 @@ if (newMoveDirection != null && this.movingDirection != newMoveDirection) {
 #loadImages(){
 
   this.slime = new Image();
-  this.slime.src = './Images/Enemy/slime1.png';
+  this.slime.src = '../Images/Enemy/slime1.png';
 
   this.purpleslime = new Image();
-  this.purpleslime.src = './Images/Enemy/purpleslime1.png';
+  this.purpleslime.src = '../Images/Enemy/purpleslime1.png';
 
   this.image = this.slime;
 
