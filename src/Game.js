@@ -14,8 +14,8 @@ const enemies = tileMap.getEnemies(velocity);
 // Win & Lose 
 let gameOver = false;
 let gameWin = false;
-const gameOverSound = new Audio("../GameSound/lose.mp3");
-const gameWinSound = new Audio("../GameSound/win.mp3");
+const gameOverSound = new Audio("./GameSound/lose.mp3");
+const gameWinSound = new Audio("./GameSound/win.mp3");
 
 // Main game loop, draws map, player, and enemies to screen
 function gameLoop(){

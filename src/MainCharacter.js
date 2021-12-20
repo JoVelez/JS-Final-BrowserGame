@@ -14,9 +14,9 @@ constructor( x, y, tileSize, velocity, tileMap ){
     this.playerAnimationTimerDefault = 10;
     this.playerAnimationTimer = null;
 
-  this.coinEffect = new Audio("../GameSound/coin.wav")
-  this.meatEffect = new Audio("../GameSound/powerup.wav")
-  this.slimeDeath = new Audio("../GameSound/slimedefeat.ogg")
+  this.coinEffect = new Audio("./GameSound/coin.wav")
+  this.meatEffect = new Audio("./GameSound/powerup.wav")
+  this.slimeDeath = new Audio("./GameSound/slimedefeat.ogg")
 
   this.timers = [];
     this.madeFirstMove = false;
@@ -48,16 +48,16 @@ draw(ctx, pause, enemies){
 
 #loadPlayerImage(){
   const playerWalk1 = new Image();
-  playerWalk1.src = "../Images/Player/walk1.png"
+  playerWalk1.src = "./Images/Player/walk1.png"
 
   const playerWalk2 = new Image();
-  playerWalk2.src = "../Images/Player/walk2.png"
+  playerWalk2.src = "./Images/Player/walk2.png"
 
   const playerWalk3 = new Image();
-  playerWalk3.src = "../Images/Player/walk3.png"
+  playerWalk3.src = "./Images/Player/walk3.png"
 
   const playerWalk4 = new Image();
-  playerWalk4.src = "../Images/Player/walk4.png"
+  playerWalk4.src = "./Images/Player/walk4.png"
 
 
   this.playerWalk = [
