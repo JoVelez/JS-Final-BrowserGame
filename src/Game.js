@@ -2,7 +2,7 @@ import TileMap from './Sprites.js';
 
 // Map Size & Player Speed
 const tileSize = 24;
-const velocity = 2;
+const velocity = 1;
 
 // Canvas, map, ctx to draw to canvas, and player
 const canvas = document.getElementById("gameCanvas");
