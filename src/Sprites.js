@@ -2,26 +2,27 @@ import Player from './MainCharacter.js'
 import MovingDirection from "./MovementControls.js";
 import Enemy from "./EnemyAI.js"
 
-//exports to be used elsewhere
+// Exports to be used elsewhere
+// sprite images
 export default class TileMap{
-    constructor(tileSize){
-        this.tileSize = tileSize;
+  constructor(tileSize){
+    this.tileSize = tileSize;
 
-        this.coin = new Image();
-        this.coin.src = '../Images/Collect/tilewithcoin.png';
+    this.coin = new Image();
+    this.coin.src = './Images/Collect/tilewithcoin.png';
 
-        this.wall = new Image();
-        this.wall.src = '../Images/DungeonTile/walltile1.png';
+    this.wall = new Image();
+    this.wall.src = './Images/DungeonTile/walltile1.png';
 
-        this.innerBorder = new Image();
-        this.innerBorder.src = '../Images/DungeonTile/plainborder.png';
+    this.innerBorder = new Image();
+    this.innerBorder.src = './Images/DungeonTile/plainborder.png';
 
-        this.floor = new Image();
-        this.floor.src = '../Images/DungeonTile/floortile2.png';
+    this.floor = new Image();
+    this.floor.src = './Images/DungeonTile/floortile2.png';
 
-        this.meat = new Image();
-        this.meat.src = '../Images/Collect/tilewithmeat.png';
-    }
+    this.meat = new Image();
+    this.meat.src = './Images/Collect/tilewithmeat.png';
+}
 
 // 0 - coins
 // 1 - wall
@@ -59,28 +60,31 @@ export default class TileMap{
         
  ];
 
+ // Draws tiles to screen
  draw(ctx) {
     for (let row = 0; row < this.map.length; row++) {
       for (let column = 0; column < this.map[row].length; column++) {
         let tile = this.map[row][column];
         if(tile === 1){
-           this.#drawWall(ctx, column, row, this.tileSize);
-        }  else if (tile === 0) {
-            this.#drawCoin(ctx, column, row, this.tileSize);
+          this.#drawWall(ctx, column, row, this.tileSize);
+        } 
+        else if (tile === 0) {
+          this.#drawCoin(ctx, column, row, this.tileSize);
         }
         else if (tile === 2) {
-            this.#drawfloor(ctx, column, row, this.tileSize);
-       }
-            else if (tile === 3) {
-            this.#drawinnerBorder(ctx, column, row, this.tileSize);
-       }
-       else if (tile === 6) {
-        this.#drawmeat(ctx, column, row, this.tileSize);
-   }
+          this.#drawfloor(ctx, column, row, this.tileSize);
+        }
+        else if (tile === 3) {
+          this.#drawinnerBorder(ctx, column, row, this.tileSize);
+        }
+        else if (tile === 6) {
+          this.#drawmeat(ctx, column, row, this.tileSize);
       }
-     }
     }
-// make a function?
+  }
+}
+
+// could probably condense and make less repetitive
     #drawWall(ctx, column, row, size) {
         ctx.drawImage(
           this.wall,
@@ -131,115 +135,118 @@ export default class TileMap{
         );
       }
 
-      getPlayer(velocity) {
-        for (let row = 0; row < this.map.length; row++) {
-          for (let column = 0; column < this.map[row].length; column++) {
-            let tile = this.map[row][column];
-            if (tile === 4) {
-              this.map[row][column] = 0;
-              return new Player(
-                column * this.tileSize,
-                row * this.tileSize,
-                this.tileSize,
-                velocity,
-                this
-              );
-            }
-           }
-          }
-         }
-
-         getEnemies(velocity){
-          const enemies = [];
-
-          for (let row = 0; row < this.map.length; row++) {
-            for (let column = 0; column < this.map[row].length; column++) {
-              let tile = this.map[row][column];
-              if (tile === 5) {
-                this.map[row][column] = 2;
-                enemies.push(new Enemy(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this))
-              }
-            }
-          }
-          return enemies;
-       }
-
-    setCanvasSize(canvas) {
-        canvas.width = this.map[0].length * this.tileSize;
-        canvas.height = this.map.length * this.tileSize;
+// places player on map
+getPlayer(velocity) {
+  for (let row = 0; row < this.map.length; row++) {
+    for (let column = 0; column < this.map[row].length; column++) {
+      let tile = this.map[row][column];
+        if (tile === 4) {
+          this.map[row][column] = 0;
+          return new Player(
+          column * this.tileSize,
+          row * this.tileSize,
+          this.tileSize,
+          velocity,
+          this
+          );
+      }
     }
+  }
+}
 
-    didCollideWithEnvironment(x,y,direction){
+// draws slimes on map
+getEnemies(velocity){
+  const enemies = [];
 
-    if (
-      Number.isInteger(x / this.tileSize) &&
-      Number.isInteger(y / this.tileSize)
-      ) {
-        let column = 0;
-        let row = 0;
-        let nextColumn = 0;
-        let nextRow = 0;
+  for (let row = 0; row < this.map.length; row++) {
+    for (let column = 0; column < this.map[row].length; column++) {
+      let tile = this.map[row][column];
+        if (tile === 5) {
+          this.map[row][column] = 2;
+          enemies.push(new Enemy(column * this.tileSize, row * this.tileSize, this.tileSize, velocity, this))
+    }
+  }
+}
+  return enemies;
+}
+
+setCanvasSize(canvas) {
+  canvas.width = this.map[0].length * this.tileSize;
+  canvas.height = this.map.length * this.tileSize;
+}
+
+didCollideWithEnvironment(x,y,direction){
+
+  if (
+    Number.isInteger(x / this.tileSize) &&
+    Number.isInteger(y / this.tileSize)
+    ) {
+      let column = 0;
+      let row = 0;
+      let nextColumn = 0;
+      let nextRow = 0;
   
-        switch (direction) {
-          case MovingDirection.right:
-            nextColumn = x + this.tileSize;
-            column = nextColumn / this.tileSize;
-            row = y / this.tileSize;
+      switch (direction) {
+        case MovingDirection.right:
+          nextColumn = x + this.tileSize;
+          column = nextColumn / this.tileSize;
+          row = y / this.tileSize;
             break;
-          case MovingDirection.left:
-            nextColumn = x - this.tileSize;
-            column = nextColumn / this.tileSize;
-            row = y / this.tileSize;
+        case MovingDirection.left:
+          nextColumn = x - this.tileSize;
+          column = nextColumn / this.tileSize;
+          row = y / this.tileSize;
             break;
-          case MovingDirection.up:
-            nextRow = y - this.tileSize;
-            row = nextRow / this.tileSize;
-            column = x / this.tileSize;
+        case MovingDirection.up:
+          nextRow = y - this.tileSize;
+          row = nextRow / this.tileSize;
+          column = x / this.tileSize;
             break;
-          case MovingDirection.down:
-            nextRow = y + this.tileSize;
-            row = nextRow / this.tileSize;
-            column = x / this.tileSize;
+        case MovingDirection.down:
+          nextRow = y + this.tileSize;
+          row = nextRow / this.tileSize;
+          column = x / this.tileSize;
             break;
-        }
-        const tile = this.map[row][column];
-      if ((tile === 1 ) || (tile === 3 )) {
-        return true;
-      }
-    }
-    return false;
   }
-
-  didWin() {
-    return this.#coinsLeft() === 0;
+  const tile = this.map[row][column];
+    if ((tile === 1 ) || (tile === 3 )) {
+      return true;
   }
+ }
+  return false;
+}
 
-  #coinsLeft() {
-    return this.map.flat().filter((tile) => tile === 0).length;
-  }
+// win condition
+didWin() {
+  return this.#coinsLeft() === 0;
+}
 
-  grabCoin(x, y) {
-    const row = y / this.tileSize;
-    const column = x / this.tileSize;
-    if (Number.isInteger(row) && Number.isInteger(column)) {
-      if (this.map[row][column] === 0) {
+#coinsLeft() {
+  return this.map.flat().filter((tile) => tile === 0).length;
+}
+
+grabCoin(x, y) {
+  const row = y / this.tileSize;
+  const column = x / this.tileSize;
+  if (Number.isInteger(row) && Number.isInteger(column)) {
+    if (this.map[row][column] === 0) {
         this.map[row][column] = 2;
-        return true;
-      }
-    }
-    return false;
+    return true;
   }
+}
+    return false;
+}
 
-  eatMeat(x, y) {
-    const row = y / this.tileSize;
-    const column = x / this.tileSize;
-    if (Number.isInteger(row) && Number.isInteger(column)) {
-      const tile = this.map[row][column];
-      if (tile === 6) {
-        this.map[row][column] = 2;
-        return true;
-      }
-    }
+eatMeat(x, y) {
+  const row = y / this.tileSize;
+  const column = x / this.tileSize;
+   if (Number.isInteger(row) && Number.isInteger(column)) {
+    const tile = this.map[row][column];
+   if (tile === 6) {
+    this.map[row][column] = 2;
+    return true;
+  }
+}
     return false;
   }
 }

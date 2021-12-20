@@ -51,6 +51,7 @@ collideWith(player) {
   }
 }
     
+// sets image when power-up is active
 #setImage(ctx, player){
   if (player.meatActive) {
   this.#setImageWhenMeatActive(player);
@@ -70,73 +71,73 @@ collideWith(player) {
   }
 }
 
-
-    #changeDirection() {
-        this.directionTimer--;
-        let newMoveDirection = null;
-        if (this.directionTimer == 0) {
-          this.directionTimer = this.directionTimerDefault;
-          newMoveDirection = Math.floor(
-            Math.random() * Object.keys(MovingDirection).length
-          );
-        }
+// Changes enemy direction
+#changeDirection() {
+  this.directionTimer--;
+  let newMoveDirection = null;
+if (this.directionTimer == 0) {
+  this.directionTimer = this.directionTimerDefault;
+  newMoveDirection = Math.floor( Math.random() * Object.keys(MovingDirection).length);
+}
     
-        if (newMoveDirection != null && this.movingDirection != newMoveDirection) {
-          if (
-            Number.isInteger(this.x / this.tileSize) &&
-            Number.isInteger(this.y / this.tileSize)
+if (newMoveDirection != null && this.movingDirection != newMoveDirection) {
+  if (
+    Number.isInteger(this.x / this.tileSize) &&
+    Number.isInteger(this.y / this.tileSize)
+    ) { if (
+          !this.tileMap.didCollideWithEnvironment(
+           this.x,
+           this.y,
+           newMoveDirection
+            )
           ) {
-            if (
-              !this.tileMap.didCollideWithEnvironment(
-                this.x,
-                this.y,
-                newMoveDirection
-              )
-            ) {
               this.movingDirection = newMoveDirection;
             }
-          }
-        }
-      }
-    
-      #move() {
-        if (
-          !this.tileMap.didCollideWithEnvironment(
-            this.x,
-            this.y,
-            this.movingDirection
-          )
-        ) {
-          switch (this.movingDirection) {
-            case MovingDirection.up:
-              this.y -= this.velocity;
-              break;
-            case MovingDirection.down:
-              this.y += this.velocity;
-              break;
-            case MovingDirection.left:
-              this.x -= this.velocity;
-              break;
-            case MovingDirection.right:
-              this.x += this.velocity;
-              break;
-          }
-        }
-      }
-
-      #random(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-
-    #loadImages(){
-
-        this.slime = new Image();
-        this.slime.src = '../Images/Enemy/slime1.png';
-
-        this.purpleslime = new Image();
-        this.purpleslime.src = '../Images/Enemy/purpleslime1.png';
-
-        this.image = this.slime;
-
     }
+  }
+}
+    
+// enemy movement
+#move() {
+  if (
+      !this.tileMap.didCollideWithEnvironment(
+      this.x,
+      this.y,
+      this.movingDirection
+      )
+    ) {
+        switch (this.movingDirection) {
+          case MovingDirection.up:
+          this.y -= this.velocity;
+            break;
+          case MovingDirection.down:
+          this.y += this.velocity;
+            break;
+          case MovingDirection.left:
+          this.x -= this.velocity;
+            break;
+          case MovingDirection.right:
+          this.x += this.velocity;
+            break;
+    }
+  }
+}
+
+//  Randomizes movement
+#random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Enemy images
+#loadImages(){
+
+  this.slime = new Image();
+  this.slime.src = './Images/Enemy/slime1.png';
+
+  this.purpleslime = new Image();
+  this.purpleslime.src = './Images/Enemy/purpleslime1.png';
+
+  this.image = this.slime;
+
+  }
 }
