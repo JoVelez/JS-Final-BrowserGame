@@ -15,7 +15,7 @@ constructor( x, y, tileSize, velocity, tileMap ){
     this.playerAnimationTimer = null;
 
   this.coinEffect = new Audio("./GameSound/coin.wav")
-  this.meatEffect = new Audio("./GameSound/Powerup.wav")
+  this.meatEffect = new Audio("./GameSound/powerup.wav")
   this.slimeDeath = new Audio("./GameSound/slimedefeat.ogg")
 
   this.timers = [];
