@@ -14,6 +14,12 @@ export default class TileMap{
     this.wall = new Image();
     this.wall.src = './Images/DungeonTile/walltile1.png';
 
+    this.wallBone1 = new Image();
+    this.wallBone1.src = './Images/DungeonTile/wallbone1.png';
+
+    this.moss = new Image();
+    this.moss.src = './Images/DungeonTile/wallmoss1.png';
+
     this.innerBorder = new Image();
     this.innerBorder.src = './Images/DungeonTile/plainborder.png';
 
@@ -31,30 +37,32 @@ export default class TileMap{
 // 4 - character start
 // 5 - slimes
 // 6 - potion
+// 7 - bone wall
+// 8 - moss
 
     map = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
         [1,6,3,3,3,3,3,0,3,3,3,3,3,0,3,3,3,3,3,6,1],
         [1,0,0,0,3,0,0,0,0,0,3,0,0,0,0,0,3,0,0,0,1],
-        [1,1,1,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,1,1,1],
-        [1,1,1,0,0,0,3,0,3,0,3,0,3,0,3,0,0,0,1,1,1],
-        [1,1,1,0,3,3,3,0,3,0,0,0,3,0,3,3,3,0,1,1,1],
-        [1,1,1,0,3,3,3,0,3,3,3,3,3,0,3,3,3,0,1,1,1],
+        [7,1,1,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,1,1,8],
+        [1,8,1,0,0,0,3,0,3,0,3,0,3,0,3,0,0,0,1,7,1],
+        [1,8,1,0,3,3,3,0,3,0,0,0,3,0,3,3,3,0,1,7,1],
+        [8,1,1,0,3,3,3,0,3,3,3,3,3,0,3,3,3,0,1,1,1],
         [1,0,0,0,0,0,3,0,0,0,0,0,0,0,3,0,0,0,0,0,1],
         [1,0,3,3,3,0,3,0,1,1,1,1,1,0,3,0,3,3,3,0,1],
         [1,0,0,0,3,0,3,0,2,5,2,5,2,0,3,0,3,0,0,0,1],
         [1,1,1,0,3,0,0,0,3,2,2,2,3,0,0,0,3,0,1,1,1],
-        [1,1,1,0,3,0,3,0,2,5,2,5,2,0,3,0,3,0,1,1,1],
-        [1,1,1,0,3,0,3,0,1,1,1,1,1,0,3,0,3,0,1,1,1],
-        [1,1,1,0,0,0,3,0,0,0,0,0,0,0,3,0,0,0,1,1,1],
-        [1,1,1,0,3,3,3,3,3,0,3,0,3,3,3,3,3,0,1,1,1],
-        [1,1,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,1,1],
+        [1,7,1,0,3,0,3,0,2,5,2,5,2,0,3,0,3,0,1,8,1],
+        [7,1,1,0,3,0,3,0,1,1,1,1,1,0,3,0,3,0,1,7,8],
+        [1,8,1,0,0,0,3,0,0,0,0,0,0,0,3,0,0,0,1,8,1],
+        [8,7,1,0,3,3,3,3,3,0,3,0,3,3,3,3,3,0,1,1,1],
+        [1,1,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,1,8],
         [1,1,0,3,3,3,0,3,0,3,3,3,0,3,0,3,3,3,0,1,1],
         [1,1,0,0,0,3,0,3,0,0,4,0,0,3,0,0,0,3,0,1,1],
-        [1,1,0,3,0,3,0,3,0,3,3,3,0,3,0,3,0,3,0,1,1],
-        [1,1,0,3,0,0,0,3,0,0,3,0,0,3,0,3,0,0,0,1,1],
-        [1,1,6,3,3,3,0,3,3,0,3,0,3,3,0,3,3,3,6,1,1],
+        [8,1,0,3,0,3,0,3,0,3,3,3,0,3,0,3,0,3,0,1,8],
+        [1,1,0,3,0,0,0,3,0,0,3,0,0,3,0,3,0,0,0,1,7],
+        [7,1,6,3,3,3,0,3,3,0,3,0,3,3,0,3,3,3,6,1,1],
         [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         
@@ -79,15 +87,43 @@ export default class TileMap{
         }
         else if (tile === 6) {
           this.#drawmeat(ctx, column, row, this.tileSize);
-      }
+        }
+        else if (tile === 7) {
+        this.#drawWallBone1(ctx, column, row, this.tileSize);
+        }
+        else if (tile === 8) {
+        this.#drawmoss(ctx, column, row, this.tileSize);
+     }
     }
   }
 }
 
+
 // could probably condense and make less repetitive
+
     #drawWall(ctx, column, row, size) {
         ctx.drawImage(
           this.wall,
+          column * this.tileSize,
+          row * this.tileSize,
+          size,
+          size
+        );
+      }
+
+      #drawWallBone1(ctx, column, row, size) {
+        ctx.drawImage(
+          this.wallBone1,
+          column * this.tileSize,
+          row * this.tileSize,
+          size,
+          size
+        );
+      }
+
+      #drawmoss(ctx, column, row, size) {
+        ctx.drawImage(
+          this.moss,
           column * this.tileSize,
           row * this.tileSize,
           size,
@@ -134,6 +170,7 @@ export default class TileMap{
           size
         );
       }
+
 
 // places player on map
 getPlayer(velocity) {
@@ -250,3 +287,4 @@ eatMeat(x, y) {
     return false;
   }
 }
+

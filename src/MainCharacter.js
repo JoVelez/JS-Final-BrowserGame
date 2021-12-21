@@ -15,19 +15,15 @@ constructor( x, y, tileSize, velocity, tileMap ){
     this.playerAnimationTimer = null;
 
     // sound effects 
-    //
-    //
   this.coinEffect = new Audio("./GameSound/coin.wav")
   this.meatEffect = new Audio("./GameSound/powerup.wav")
   this.slimeDeath = new Audio("./GameSound/slimedefeat.ogg")
 
   this.timers = [];
-    this.madeFirstMove = false;
+  this.madeFirstMove = false;
 
     document.addEventListener("keydown", this.#keydown);
-
-    
-
+  
     this.#loadPlayerImage();
 }
 
@@ -167,7 +163,7 @@ switch (this.currentMovingDirection) {
   
 #grabCoin() {
   if (this.tileMap.grabCoin(this.x, this.y) && this.madeFirstMove) {
-      this.coinEffect.play();
+      this.coinEffect.play()
   }
 }
 
